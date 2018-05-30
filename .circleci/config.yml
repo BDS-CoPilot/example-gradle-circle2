@@ -6,22 +6,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: ./gradlew dependencies
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-
-      - run: ./gradlew test
+      - run: ./gradlew assemble
+      - run: ./gradlew check
   copilot:
     docker:
       - image: circleci/openjdk:8-jdk
