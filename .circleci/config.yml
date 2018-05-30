@@ -9,4 +9,4 @@ jobs:
       - run: ./gradlew assemble
       - run: ./gradlew check
       - deploy:
-          command: bash <(curl -s https://copilot-valid.blackducksoftware.com/ci/circle/scripts/upload)
+          command: bash <(curl -s https://copilot-valid.blackducksoftware.com/ci/circle2/scripts/upload)
