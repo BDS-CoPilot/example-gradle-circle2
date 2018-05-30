@@ -2,13 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
-
-    environment:
-      TERM: dumb
-    
     steps:
       - checkout
 
@@ -19,12 +14,26 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: gradle dependencies
+      - run: ./gradlew dependencies
 
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
         
-      # run tests!
-      - run: gradle test
+      - run: ./gradlew test
+  copilot:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    steps:
+      - run: bash <(curl -s https://copilot-valid.blackducksoftware.com/ci/circle/scripts/upload)
+
+workflows:
+  version: 2
+  build-and-scan:
+    jobs:
+      - build
+      - copilot:
+        requires:
+	  - build
