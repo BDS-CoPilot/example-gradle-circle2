@@ -29,9 +29,10 @@ jobs:
     steps:
       - run: bash <(curl -s https://copilot-valid.blackducksoftware.com/ci/circle/scripts/upload)
 workflows:
+  version: 2
   build-and-scan:
     jobs:
       - build
       - copilot:
-        requires:
-	  - build
+          requires:
+	    - build
